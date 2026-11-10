@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+<section class="hero">
+    <div class="container hero__conteudo">
+        <h1>Financie seu imóvel com segurança</h1>
+        <p>Descubra como funciona o financiamento imobiliário.</p>
+
+        <div class="secao__acoes">
+            <a href="/imoveis" class="botao botao--primario">Ver imóveis disponíveis</a>
+
+        </div>
+    </div>
+</section>
+
+<section class="secao container" id="como-funciona">
+    <h2>Como funciona</h2>
+    <div class="grade-servicos">
+        <article class="card-servico">
+            <h3>1. Escolha o imóvel</h3>
+            <p>Defina o imóvel e confirme que a documentação dele está regular.</p>
+        </article>
+        <article class="card-servico">
+            <h3>2. Faça a simulação</h3>
+            <p>Veja o valor da entrada, o prazo e a parcela que cabem no seu orçamento.</p>
+        </article>
+        <article class="card-servico">
+            <h3>3. Envie seus documentos</h3>
+            <p>O banco analisa sua renda, seu histórico de crédito e a documentação do imóvel.</p>
+        </article>
+        <article class="card-servico">
+            <h3>4. Aguarde a avaliação</h3>
+            <p>O banco avalia o imóvel para definir o valor que pode ser financiado.</p>
+        </article>
+        <article class="card-servico">
+            <h3>5. Assine o contrato</h3>
+            <p>Com tudo aprovado, o contrato é assinado e registrado em cartório.</p>
+        </article>
+        <article class="card-servico">
+            <h3>6. Receba as chaves</h3>
+            <p>Após o registro, o imóvel é seu e as parcelas começam a ser cobradas.</p>
+        </article>
+    </div>
+</section>
+
+<section class="secao container" id="modalidades">
+    <h2>Modalidades de financiamento</h2>
+    <div class="grade-servicos">
+        <article class="card-servico">
+            <h3>SFH</h3>
+            <p>
+                Sistema Financeiro da Habitação. Indicado para imóveis até um valor máximo definido pelo
+                governo e permite usar o FGTS na entrada ou nas parcelas.
+            </p>
+        </article>
+        <article class="card-servico">
+            <h3>SFI</h3>
+            <p>
+                Sistema de Financiamento Imobiliário. Atende imóveis de valor mais alto e não tem teto,
+                mas não permite o uso do FGTS.
+            </p>
+        </article>
+        <article class="card-servico">
+            <h3>Programas habitacionais</h3>
+            <p>
+                Programas do governo, como o Minha Casa, Minha Vida, oferecem juros reduzidos e subsídios
+                conforme a renda familiar.
+            </p>
+        </article>
+    </div>
+</section>
+
+<section class="secao container" id="requisitos">
+    <h2>O que é necessário</h2>
+    <div class="grade-servicos">
+        <article class="card-servico">
+            <h3>Requisitos</h3>
+            <ul class="lista">
+                <li>Ter mais de 18 anos e capacidade civil para assinar o contrato.</li>
+                <li>Comprovar renda: a parcela costuma ficar limitada a 30% da renda familiar bruta.</li>
+                <li>Ter o nome sem restrições graves em órgãos de proteção ao crédito.</li>
+                <li>Pagar a entrada, normalmente de 20% ou mais do valor do imóvel.</li>
+            </ul>
+        </article>
+        <article class="card-servico">
+            <h3>Documentos do comprador</h3>
+            <ul class="lista">
+                <li>RG e CPF (ou CNH).</li>
+                <li>Certidão de estado civil.</li>
+                <li>Comprovante de residência recente.</li>
+                <li>Comprovantes de renda: holerites, extratos ou declaração de Imposto de Renda.</li>
+                <li>Extrato do FGTS, se for utilizá-lo.</li>
+            </ul>
+        </article>
+        <article class="card-servico">
+            <h3>Documentos do imóvel</h3>
+            <ul class="lista">
+                <li>Matrícula atualizada.</li>
+                <li>Certidões negativas de débitos (IPTU e condomínio).</li>
+                <li>Documentos do vendedor.</li>
+            </ul>
+        </article>
+    </div>
+</section>
+
+<section class="secao container" id="custos">
+    <h2>Custos além da entrada</h2>
+    <div class="grade-servicos">
+        <article class="card-servico">
+            <h3>ITBI</h3>
+            <p>Imposto municipal sobre a transmissão do imóvel.</p>
+        </article>
+        <article class="card-servico">
+            <h3>Escritura e registro</h3>
+            <p>Taxas cobradas pelo cartório.</p>
+        </article>
+        <article class="card-servico">
+            <h3>Avaliação do imóvel</h3>
+            <p>Taxa cobrada pelo banco para avaliar o imóvel.</p>
+        </article>
+        <article class="card-servico">
+            <h3>Seguros obrigatórios</h3>
+            <p>Proteção por morte ou invalidez e por danos físicos ao imóvel.</p>
+        </article>
+    </div>
+</section>
+
+<section class="secao container" id="duvidas">
+    <h2>Perguntas frequentes</h2>
+
+    <details class="faq">
+        <summary>Posso usar o FGTS?</summary>
+        <p>
+            Sim, em imóveis enquadrados no SFH, para a entrada, para amortizar o saldo ou para abater
+            parcelas. É preciso ter pelo menos três anos de trabalho sob o regime do FGTS e não ter outro
+            imóvel financiado na mesma cidade.
+        </p>
+    </details>
+
+    <details class="faq">
+        <summary>Qual é a diferença entre SAC e Price?</summary>
+        <p>
+            No SAC, as parcelas começam mais altas e diminuem com o tempo, o que reduz o total de juros.
+            Na Price, as parcelas são fixas, mas o total pago ao final costuma ser maior.
+        </p>
+    </details>
+
+    <details class="faq">
+        <summary>Posso quitar ou amortizar antes do prazo?</summary>
+        <p>
+            Sim. Você pode antecipar parcelas ou fazer amortizações extras para reduzir o prazo ou o valor
+            da parcela, diminuindo o total de juros pago.
+        </p>
+    </details>
+
+    <details class="faq">
+        <summary>Posso financiar com outra pessoa?</summary>
+        <p>
+            Sim. É possível somar a renda de cônjuge, familiares ou outros compradores, desde que todos
+            entreguem a documentação e passem pela análise de crédito.
+        </p>
+    </details>
+
+    <details class="faq">
+        <summary>O que acontece se eu atrasar as parcelas?</summary>
+        <p>
+            O atraso gera multa e juros. Se a inadimplência continuar, o banco pode retomar o imóvel,
+            por ele ser a garantia do contrato (alienação fiduciária).
+        </p>
+    </details>
+</section>
+
+<section class="secao container">
+    <div class="secao__cabecalho">
+        <h2>Pronto para dar o próximo passo?</h2>
+        <a href="/imoveis" class="link-seta">Ver imóveis →</a>
+    </div>
+</section>
+{% endblock %}
