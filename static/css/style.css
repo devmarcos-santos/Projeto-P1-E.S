@@ -376,3 +376,38 @@ a {
         font-size: 1.8rem;
     }
 }
+
+/* Financiamento */
+.secao {
+    scroll-margin-top: 80px;
+}
+
+.lista {
+    padding-left: 20px;
+    color: var(--cor-texto-suave);
+}
+
+.lista li + li {
+    margin-top: 6px;
+}
+
+.faq {
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    padding: 16px 20px;
+}
+
+.faq + .faq {
+    margin-top: 8px;
+}
+
+.faq summary {
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.faq p {
+    margin-top: 8px;
+    color: var(--cor-texto-suave);
+}
