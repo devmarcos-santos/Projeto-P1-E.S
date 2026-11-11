@@ -54,6 +54,9 @@ def index():
 def financiamento():
   return render_template("financiamento.html")
 
+@app.route("/empreendimentos")
+def empreendimentos():
+  return render_template("empreendimentos.html")
 
 @app.errorhandler(404)
 def pagina_nao_encontrada(erro):

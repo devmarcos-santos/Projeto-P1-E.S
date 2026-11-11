@@ -411,3 +411,15 @@ a {
     margin-top: 8px;
     color: var(--cor-texto-suave);
 }
+/*Empreendimentos*/
+.aviso{
+    background: var(--cor-superficie);
+    border: 1px solid var(--cor-borda);
+    border-radius: var(--raio);
+    padding: 24px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.aviso:hover{
+    border-color: var(--cor-primaria);
+    box-shadow: var(--sombra);
+}
