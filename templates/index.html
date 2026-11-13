@@ -29,7 +29,7 @@
             {% endif %}
             <div class="card-imovel__corpo">
                 <span class="card-imovel__tipo">{{ imovel.tipo }}</span>
-                <h3>{{ imovel.titulo }}</h3>
+                <h3><a href="{{ url_for('detalhes_imovel', id_imovel=imovel.id) }}">{{ imovel.titulo }}</a></h3>
                 <p class="card-imovel__local">{{ imovel.bairro }}, {{ imovel.cidade }}</p>
                 <ul class="card-imovel__info">
                     <li>{{ imovel.quartos }} quartos</li>
