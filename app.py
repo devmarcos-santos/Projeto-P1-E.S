@@ -1,7 +1,7 @@
 import csv
 import os
 
-from flask import Flask, flash, render_template
+from flask import Flask, flash, abort, render_template
 
 app = Flask(__name__)
 # A sessão do Flask (usada pelas mensagens flash) precisa de uma chave secreta.
@@ -49,7 +49,7 @@ def formatar_reais(valor):
     return "Preço sob consulta"
   return f"R$ {numero}"
 
-
+# Rotas
 @app.route("/")
 def index():
   if ERRO_IMOVEIS:
@@ -63,6 +63,13 @@ def financiamento():
 @app.route("/empreendimentos")
 def empreendimentos():
   return render_template("empreendimentos.html")
+
+@app.route("/imoveis/<id_imovel>")
+def detalhes_imovel(id_imovel):
+  imovel = buscar_imovel(id_imovel)
+  if imovel is None:
+    abort(404)
+  return render_template("detalhes_imovel.html", imovel=imovel)
 
 @app.errorhandler(404)
 def pagina_nao_encontrada(erro):
