@@ -30,6 +30,12 @@ def carregar_destaques(imoveis, limite=4):
       destaques.append(imovel)
   return destaques
 
+def buscar_imovel(id_imovel):
+  for imovel in IMOVEIS:
+    if imovel["id"] == id_imovel:
+      return imovel
+  return None
+
 
 # Leitura do CSV na inicialização da aplicação.
 IMOVEIS, ERRO_IMOVEIS = carregar_imoveis()
