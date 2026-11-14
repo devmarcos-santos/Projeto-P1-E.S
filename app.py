@@ -54,9 +54,15 @@ def index():
 def financiamento():
   return render_template("financiamento.html")
 
+<<<<<<< HEAD
 @app.route("/cadastrar_imovel")
 def cadastrar_imovel():
   return render_template("publicar.html")
+=======
+@app.route("/empreendimentos")
+def empreendimentos():
+  return render_template("empreendimentos.html")
+>>>>>>> 9741b830fa7ea3a4f4b72d6d97054a3f9ca5bda2
 
 @app.errorhandler(404)
 def pagina_nao_encontrada(erro):
