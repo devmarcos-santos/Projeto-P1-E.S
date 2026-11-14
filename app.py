@@ -50,6 +50,10 @@ def index():
     flash(ERRO_IMOVEIS, "erro")
   return render_template("index.html", destaques=carregar_destaques(IMOVEIS))
 
+@app.route("/cadastrar_imovel")
+def cadastrar_imovel():
+  return render_template("publicar.html")
+
 @app.route("/financiamento")
 def financiamento():
   return render_template("financiamento.html")
@@ -57,10 +61,6 @@ def financiamento():
 @app.route("/empreendimentos")
 def empreendimentos():
   return render_template("empreendimentos.html")
-
-@app.route("/cadastrar_imovel")
-def cadastrar_imovel():
-  return render_template("publicar.html")
 
 @app.errorhandler(404)
 def pagina_nao_encontrada(erro):
