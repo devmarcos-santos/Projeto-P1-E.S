@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block titulo %}Imobiliária P1{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body>
     <header class="topo">
         <div class="container topo__conteudo">
@@ -17,6 +19,9 @@
                 <a href="/imoveis">Imóveis</a>
                 <a href="{{ url_for('financiamento') }}">Financiamento</a>
                 <a href="/empreendimentos">Empreendimentos</a>
+                <a href="{{ url_for('cadastrar_imovel') }}">Publicar</a>
+
+
             </nav>
             <div class="topo__acoes">
                 <a href="/login" class="botao botao--texto">Entrar</a>
@@ -46,4 +51,5 @@
         </div>
     </footer>
 </body>
+
 </html>

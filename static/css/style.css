@@ -387,7 +387,7 @@ a {
     color: var(--cor-texto-suave);
 }
 
-.lista li + li {
+.lista li+li {
     margin-top: 6px;
 }
 
@@ -398,7 +398,7 @@ a {
     padding: 16px 20px;
 }
 
-.faq + .faq {
+.faq+.faq {
     margin-top: 8px;
 }
 
@@ -410,4 +410,37 @@ a {
 .faq p {
     margin-top: 8px;
     color: var(--cor-texto-suave);
+}
+
+.centro div {
+    display: flex;
+    flex-direction: column;
+
+    width: 1000px;
+    height: 70px;
+    padding-left: 500px;
+    padding-top: 10px
+}
+
+.texto_centro {
+    padding-left: 500px;
+}
+
+.aumentar_input {
+    height: 100px;
+}
+
+.botao_formulario {
+    font-size: 1rem;
+    border-radius: var(--raio);
+    background-color: var(--cor-primaria);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto 0 auto;
+    /* 20px em cima, automático nas laterais (centraliza) e 0 embaixo */
+    padding: 12px 20px;
+    /* Tamanho interno do botão */
+
 }
