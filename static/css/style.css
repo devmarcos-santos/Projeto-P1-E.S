@@ -637,3 +637,34 @@ a {
         grid-template-columns: 1fr;
     }
 }
+/*botao_contato*/
+.btn-contatar {
+  display: inline-block;
+  padding: 12px 24px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  text-decoration: none;
+  color: #ffffff;
+  border-radius: 6px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+
+.btn-contatar:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+.btn-whatsapp {
+  background-color: #25D366; /* Verde WhatsApp */
+}
+
+.btn-email {
+  background-color: #007BFF; /* Azul padrão */
+}
+
+.btn-ligar {
+  background-color: #333333; /* Cinza escuro */
+}
