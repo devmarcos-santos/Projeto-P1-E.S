@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+<h1 class="texto_centro">Formulário de Anúncio</h1>
+
+<form class="centro" action="/enviar_dados" method="POST" enctype="multipart/form-data">
+    <h2 class="texto_centro">Informações do Anúncio</h2>
+
+
+
+    <div>
+        <label for="titulo">Título do Anúncio:</label>
+        <input class="aumentar_input" type="text" id="titulo" name="anuncio_titulo"
+            placeholder="Digite o título do anúncio" required>
+    </div>
+
+    <div>
+        <label for="preco">Preço (R$):</label>
+        <input class="aumentar_input" type="number" id="preco" name="anuncio_preco" step="0.01" min="0"
+            placeholder="0,00" required>
+    </div>
+
+    <div>
+        <label for="rua">Rua:</label>
+        <input class="aumentar_input" type="text" id="rua" name="imovel_rua" placeholder="Digite a rua do imóvel"
+            required>
+    </div>
+
+    <div>
+        <label for="cidade">Cidade:</label>
+        <input class="aumentar_input" type="text" id="cidade" name="imovel_cidade"
+            placeholder="Digite a cidade do imóvel" required>
+    </div>
+
+    <div>
+        <label for="estado">Estado:</label>
+        <input class="aumentar_input" type="text" id="estado" name="imovel_estado"
+            placeholder="Digite o estado do imóvel" required>
+    </div>
+
+    <div>
+        <label for="cep">CEP:</label>
+        <input class="aumentar_input" type="text" id="cep" name="imovel_cep" placeholder="00000-000" maxlength="9"
+            required>
+    </div>
+
+    <div>
+        <label for="descricao">Descrição:</label>
+        <textarea id="descricao" name="anuncio_descricao" rows="8"
+            placeholder="Descreva o anúncio" required></textarea>
+    </div>
+    <div>
+        <label for="fotos">Fotos do anúncio:</label>
+        <input type="file" id="fotos" name="usuario_fotos" accept="image/*" multiple required>
+    </div>
+
+
+    <div>
+        <label for="email">E-mail:</label>
+        <input class="aumentar_input" type="email" id="email" name="usuario_email" placeholder="seuemail@exemplo.com"
+            required>
+    </div>
+
+    <div>
+        <label for="contato">Telefone / WhatsApp:</label>
+        <input  type="tel" id="contato" name="usuario_contato" placeholder="(00) 00000-0000"
+            maxlength="15" required>
+    </div>
+
+    <button class="botao_formulario" type="submit">Publicar Anúncio</button>
+</form>
+
+{% endblock %}
