@@ -425,34 +425,95 @@ a {
 }
 
 /* Publicar anúncio */
-.centro div {
+.formulario {
+    max-width: 760px;
+    margin: 0 auto;
+    background: var(--cor-superficie);
+    border-radius: var(--raio);
+    box-shadow: var(--sombra);
+    padding: 32px;
+}
+
+.formulario h1 {
+    font-size: 1.8rem;
+    margin-bottom: 4px;
+}
+
+.formulario__intro {
+    color: var(--cor-texto-suave);
+    margin-bottom: 24px;
+}
+
+.formulario__grupo {
+    border: none;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.formulario__grupo legend {
+    grid-column: 1 / -1;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--cor-primaria);
+    margin-bottom: 12px;
+}
+
+.campo {
     display: flex;
     flex-direction: column;
-
-    width: 1000px;
-    height: 70px;
-    padding-left: 500px;
-    padding-top: 10px
+    gap: 6px;
 }
 
-.texto_centro {
-    padding-left: 500px;
+.campo--inteiro {
+    grid-column: 1 / -1;
 }
 
-.aumentar_input {
-    height: 100px;
+.campo label {
+    font-weight: 600;
+    font-size: 0.9rem;
 }
 
-.botao_formulario {
-    font-size: 1rem;
+.campo input,
+.campo select,
+.campo textarea {
+    font: inherit;
+    padding: 10px 12px;
+    border: 1px solid var(--cor-borda);
     border-radius: var(--raio);
-    background-color: var(--cor-primaria);
-    color: #fff;
+    background: var(--cor-superficie);
+    color: var(--cor-texto);
+    width: 100%;
+    min-width: 0;
+}
+
+.campo input:focus,
+.campo select:focus,
+.campo textarea:focus {
+    outline: 2px solid var(--cor-primaria);
+    outline-offset: 1px;
+    border-color: var(--cor-primaria);
+}
+
+.campo textarea {
+    resize: vertical;
+}
+
+.formulario__enviar {
+    display: block;
+    width: 100%;
     border: none;
     cursor: pointer;
-    display: block;
-    margin: 20px auto 0 auto;
-    /* 20px em cima, automático nas laterais (centraliza) e 0 embaixo */
-    padding: 12px 20px;
-    /* Tamanho interno do botão */
+}
+
+@media (max-width: 860px) {
+    .formulario {
+        padding: 20px;
+    }
+
+    .formulario__grupo {
+        grid-template-columns: 1fr;
+    }
 }
