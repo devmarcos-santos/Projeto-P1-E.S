@@ -68,6 +68,10 @@ def financiamento():
 def empreendimentos():
   return render_template("empreendimentos.html")
 
+@app.route("/imoveis")
+def listar_imoveis():
+  return render_template("imoveis.html")
+
 @app.route("/imoveis/<id_imovel>")
 def detalhes_imovel(id_imovel):
   imovel = buscar_imovel(id_imovel)
