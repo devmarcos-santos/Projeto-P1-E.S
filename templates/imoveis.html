@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block titulo %}Imóveis · Imobiliária P1{% endblock %}
+
+{% block conteudo %}
+<section class="secao container">
+  <header class="header-listagem">
+    <h1>Imóveis disponíveis</h1>
+    <p>Encontre as melhores oportunidades selecionadas para você</p>
+  </header>
+
+  {% if imoveis %}
+  <div class="imoveis-grid">
+    {% for imovel in imoveis %}
+    <article class="imovel-card">
+      <div class="card-imagem">
+        {% if imovel.imagem %}
+        <img src="{{ url_for('static', filename=imovel.imagem) }}" alt="{{ imovel.titulo }}">
+        {% else %}
+        <div class="card-imagem__vazia">{{ imovel.tipo }}</div>
+        {% endif %}
+        <span class="badge">{{ imovel.tipo }}</span>
+      </div>
+      <div class="card-conteudo">
+        <div class="preco">{{ imovel.preco | reais }}</div>
+        <h2 class="titulo">{{ imovel.titulo }}</h2>
+        <p class="localizacao">{{ imovel.bairro }}, {{ imovel.cidade }}</p>
+        <div class="caracteristicas">
+          <span>{{ imovel.quartos }} quartos</span>
+          <span>{{ imovel.banheiros }} banheiros</span>
+          <span>{{ imovel.area }} m²</span>
+        </div>
+        <a href="{{ url_for('detalhes_imovel', id_imovel=imovel.id) }}" class="botao-detalhes">Ver detalhes</a>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="vazio">Nenhum imóvel disponível no momento.</p>
+  {% endif %}
+</section>
+{% endblock %}
