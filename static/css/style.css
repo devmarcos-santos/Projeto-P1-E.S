@@ -754,18 +754,6 @@ a {
 
 /* Pagina de imoveis*/
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
 .header-listagem {
   margin-bottom: 30px;
 }
@@ -815,6 +803,16 @@ a {
   object-fit: cover;
 }
 
+.card-imagem__vazia {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  background: linear-gradient(135deg, #dbe6ee, #c3d4e0);
+  color: var(--cor-primaria-escura);
+  font-weight: 600;
+}
+
 .badge {
   position: absolute;
   top: 14px;
@@ -825,16 +823,10 @@ a {
   font-weight: 700;
   text-transform: uppercase;
   color: #fff;
+  background-color: var(--cor-primaria);
   letter-spacing: 0.5px;
 }
 
-.badge.venda {
-  background-color: #2b6cb0;
-}
-
-.badge.aluguel {
-  background-color: #2f855a;
-}
 
 .card-conteudo {
   padding: 20px;
@@ -856,7 +848,7 @@ a {
   color: #718096;
 }
 
-.titulo {
+.imovel-card .titulo {
   font-size: 17px;
   font-weight: 600;
   color: #2d3748;

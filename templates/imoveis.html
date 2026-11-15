@@ -1,68 +1,42 @@
 {% extends "base.html" %}
 
-{% block conteudo %}
+{% block titulo %}Imóveis · Imobiliária P1{% endblock %}
 
-<div class="container">
+{% block conteudo %}
+<section class="secao container">
   <header class="header-listagem">
-    <h1>Imóveis Disponiveis </h1>
+    <h1>Imóveis disponíveis</h1>
     <p>Encontre as melhores oportunidades selecionadas para você</p>
   </header>
 
-  <main class="imoveis-grid">
-
+  {% if imoveis %}
+  <div class="imoveis-grid">
+    {% for imovel in imoveis %}
     <article class="imovel-card">
       <div class="card-imagem">
-        <img src="https://unsplash.com">
+        {% if imovel.imagem %}
+        <img src="{{ url_for('static', filename=imovel.imagem) }}" alt="{{ imovel.titulo }}">
+        {% else %}
+        <div class="card-imagem__vazia">{{ imovel.tipo }}</div>
+        {% endif %}
+        <span class="badge">{{ imovel.tipo }}</span>
       </div>
       <div class="card-conteudo">
-        <div class="preco">R$ 1.250.000</div>
-        <h2 class="titulo">Casa de Alto Padrão em Condomínio</h2>
-        <p class="localizacao">Altiplano, João Pessoa - PB</p>
+        <div class="preco">{{ imovel.preco | reais }}</div>
+        <h2 class="titulo">{{ imovel.titulo }}</h2>
+        <p class="localizacao">{{ imovel.bairro }}, {{ imovel.cidade }}</p>
         <div class="caracteristicas">
-          <span> PB</span>
-          <span> VENDA </span>
-          <span>240 m²</span>
+          <span>{{ imovel.quartos }} quartos</span>
+          <span>{{ imovel.banheiros }} banheiros</span>
+          <span>{{ imovel.area }} m²</span>
         </div>
-        <a href="#" class="botao-detalhes">Ver detalhes</a>
+        <a href="{{ url_for('detalhes_imovel', id_imovel=imovel.id) }}" class="botao-detalhes">Ver detalhes</a>
       </div>
     </article>
-
-    <article class="imovel-card">
-      <div class="card-imagem">
-        <img src="imagem.jpg">
-      </div>
-      <div class="card-conteudo">
-        <div class="preco">R$ 3.400 <span>/mês</span></div>
-        <h2 class="titulo">Apartamento Beira-Mar Mobiliado</h2>
-        <p class="localizacao">Cabo Branco, João Pessoa - PB</p>
-        <div class="caracteristicas">
-          <span>PB</span>
-          <span>ALUGAR</span>
-          <span> 78 m²</span>
-        </div>
-        <a href="#" class="botao-detalhes">Ver detalhes</a>
-      </div>
-    </article>
-
-
-    <article class="imovel-card">
-      <div class="card-imagem">
-        <img src="https://unsplash.com">
-      </div>
-      <div class="card-conteudo">
-        <div class="preco">R$ 680.000</div>
-        <h2 class="titulo">Casa Térrea com Jardim Amplo</h2>
-        <p class="localizacao">Bessa, João Pessoa - PB</p>
-        <div class="caracteristicas">
-          <span>PB</span>
-          <span> VENDA </span>
-          <span>150 m²</span>
-        </div>
-        <a href="#" class="botao-detalhes">Ver detalhes</a>
-      </div>
-    </article>
-
-
-</div>
-
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="vazio">Nenhum imóvel disponível no momento.</p>
+  {% endif %}
+</section>
 {% endblock %}
