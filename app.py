@@ -70,7 +70,9 @@ def empreendimentos():
 
 @app.route("/imoveis")
 def listar_imoveis():
-  return render_template("imoveis.html")
+  if ERRO_IMOVEIS:
+    flash(ERRO_IMOVEIS, "erro")
+  return render_template("imoveis.html", imoveis=IMOVEIS)
 
 @app.route("/imoveis/<id_imovel>")
 def detalhes_imovel(id_imovel):
