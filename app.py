@@ -17,6 +17,8 @@ trava_csv = Lock()
 CAMPOS_IMOVEL = ["id", "titulo", "tipo", "bairro", "cidade", "preco",
                  "quartos", "banheiros", "area", "imagem", "destaque"]
 
+PASTA_FOTOS = os.path.join(app.root_path, "static", "images", "imoveis")
+
 
 
 def carregar_imoveis():
@@ -44,6 +46,16 @@ def buscar_imovel(id_imovel):
     if imovel["id"] == id_imovel:
       return imovel
   return None
+
+def salvar_foto(arquivo, id_imovel):
+  """Salva a foto em static/images/imoveis e devolve o caminho para o CSV."""
+  if arquivo is None or arquivo.filename == "":
+    return ""
+  extensao = arquivo.filename.rsplit(".", 1)[-1].lower()
+  nome = f"imovel-{id_imovel}.{extensao}"
+  os.makedirs(PASTA_FOTOS, exist_ok=True)  # cria a pasta se ela não existir
+  arquivo.save(os.path.join(PASTA_FOTOS, nome))
+  return f"images/imoveis/{nome}"
 
 
 # Leitura do CSV na inicialização da aplicação.
@@ -84,7 +96,7 @@ def enviar_dados():
     "quartos": request.form.get("imovel_quartos", "").strip(),
     "banheiros": request.form.get("imovel_banheiros", "").strip(),
     "area": request.form.get("imovel_area", "").strip(),
-    "imagem": "",
+    "imagem": salvar_foto(request.files.get("usuario_fotos"), novo_id),
     "destaque": "nao",
   }
 
