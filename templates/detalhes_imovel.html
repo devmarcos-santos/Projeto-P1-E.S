@@ -72,8 +72,8 @@
             <h2>Tenho interesse</h2>
             <p class="card-sub">Fale com o vendedor sobre este imóvel.</p>
 
-  <form action="/contato" method="POST" id="form-contato">
-    <input type="hidden" name="imovel_id" id="imovel_id">
+  <form action="{{ url_for('enviar_contato') }}" method="POST" id="form-contato">
+    <input type="hidden" name="imovel_id" id="imovel_id" value="{{ imovel.id }}">
 
     <div class="campo">
       <label for="nome">Nome</label>
