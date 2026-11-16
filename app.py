@@ -57,6 +57,50 @@ def salvar_foto(arquivo, id_imovel):
   arquivo.save(os.path.join(PASTA_FOTOS, nome))
   return f"images/imoveis/{nome}"
 
+EXTENSOES_FOTO = {"jpg", "jpeg", "png", "webp"}
+
+def validar_imovel(form, foto):
+  """Devolve uma lista de mensagens de erro. Lista vazia = tudo certo."""
+  erros = []
+
+  obrigatorios = {
+    "anuncio_titulo": "Título", "imovel_tipo": "Tipo",
+    "imovel_bairro": "Bairro", "imovel_cidade": "Cidade",
+    "imovel_rua": "Rua", "imovel_estado": "Estado",
+  }
+  for campo, nome in obrigatorios.items():
+    if not form.get(campo, "").strip():
+      erros.append(f"Preencha o campo {nome}.")
+
+  try:
+    if float(form.get("anuncio_preco", "")) < 0:
+      erros.append("O preço não pode ser negativo.")
+  except ValueError:
+    erros.append("Informe um preço válido.")
+
+  for campo, nome in [("imovel_quartos", "Quartos"), ("imovel_banheiros", "Banheiros")]:
+    valor = form.get(campo, "")
+    if not valor.isdigit():
+      erros.append(f"{nome} deve ser um número inteiro.")
+
+  area = form.get("imovel_area", "")
+  if not area.isdigit() or int(area) < 1:
+    erros.append("A área deve ser um número maior que zero.")
+
+  cep = form.get("imovel_cep", "").replace("-", "")
+  if not (cep.isdigit() and len(cep) == 8):
+    erros.append("Informe um CEP com 8 números.")
+
+  if "@" not in form.get("usuario_email", ""):
+    erros.append("Informe um e-mail válido.")
+
+  if foto is None or foto.filename == "":
+    erros.append("Envie pelo menos uma foto do imóvel.")
+  elif foto.filename.rsplit(".", 1)[-1].lower() not in EXTENSOES_FOTO:
+    erros.append("A foto deve ser JPG, PNG ou WEBP.")
+
+  return erros
+
 
 # Leitura do CSV na inicialização da aplicação.
 IMOVEIS, ERRO_IMOVEIS = carregar_imoveis()
@@ -83,6 +127,14 @@ def cadastrar_imovel():
 
 @app.route("/enviar_dados", methods=["POST"])
 def enviar_dados():
+
+  foto = request.files.get("usuario_fotos")
+  erros = validar_imovel(request.form, foto)
+  if erros:
+    for erro in erros:
+      flash(erro, "erro")
+    return redirect(url_for("cadastrar_imovel"))
+  
   # O próximo id é o maior id que já existe + 1.
   novo_id = str(max((int(imovel["id"]) for imovel in IMOVEIS), default=0) + 1)
 
@@ -96,7 +148,7 @@ def enviar_dados():
     "quartos": request.form.get("imovel_quartos", "").strip(),
     "banheiros": request.form.get("imovel_banheiros", "").strip(),
     "area": request.form.get("imovel_area", "").strip(),
-    "imagem": salvar_foto(request.files.get("usuario_fotos"), novo_id),
+    "imagem": salvar_foto(foto, novo_id),
     "destaque": "nao",
   }
 
