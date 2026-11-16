@@ -14,6 +14,9 @@ CSV_CONTATOS = os.path.join(app.root_path, "data", "contatos.csv")
 CAMPOS_CONTATO = ["data", "imovel_id", "nome", "email", "telefone", "mensagem"]
 # Evita que dois envios ao mesmo tempo escrevam no CSV de contatos juntos.
 trava_csv = Lock()
+CAMPOS_IMOVEL = ["id", "titulo", "tipo", "bairro", "cidade", "preco",
+                 "quartos", "banheiros", "area", "imagem", "destaque"]
+
 
 
 def carregar_imoveis():
@@ -65,6 +68,35 @@ def index():
 @app.route("/cadastrar_imovel")
 def cadastrar_imovel():
   return render_template("publicar.html")
+
+@app.route("/enviar_dados", methods=["POST"])
+def enviar_dados():
+  # O próximo id é o maior id que já existe + 1.
+  novo_id = str(max((int(imovel["id"]) for imovel in IMOVEIS), default=0) + 1)
+
+  imovel = {
+    "id": novo_id,
+    "titulo": request.form.get("anuncio_titulo", "").strip(),
+    "tipo": request.form.get("imovel_tipo", "").strip(),
+    "bairro": request.form.get("imovel_bairro", "").strip(),
+    "cidade": request.form.get("imovel_cidade", "").strip(),
+    "preco": request.form.get("anuncio_preco", "").strip(),
+    "quartos": request.form.get("imovel_quartos", "").strip(),
+    "banheiros": request.form.get("imovel_banheiros", "").strip(),
+    "area": request.form.get("imovel_area", "").strip(),
+    "imagem": "",
+    "destaque": "nao",
+  }
+
+  with trava_csv:
+    with open(CSV_IMOVEIS, "a", newline="", encoding="utf-8") as arquivo:
+      writer = csv.DictWriter(arquivo, fieldnames=CAMPOS_IMOVEL)
+      writer.writerow(imovel)
+    # O CSV só é lido quando o app abre, então atualizamos a lista na memória também.
+    IMOVEIS.append(imovel)
+
+  flash("Imóvel publicado com sucesso!", "sucesso")
+  return redirect(url_for("detalhes_imovel", id_imovel=novo_id))
 
 @app.route("/financiamento")
 def financiamento():
