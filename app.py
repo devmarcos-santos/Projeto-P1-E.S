@@ -14,6 +14,11 @@ CSV_CONTATOS = os.path.join(app.root_path, "data", "contatos.csv")
 CAMPOS_CONTATO = ["data", "imovel_id", "nome", "email", "telefone", "mensagem"]
 # Evita que dois envios ao mesmo tempo escrevam no CSV de contatos juntos.
 trava_csv = Lock()
+CAMPOS_IMOVEL = ["id", "titulo", "tipo", "bairro", "cidade", "preco",
+                 "quartos", "banheiros", "area", "imagem", "destaque"]
+
+PASTA_FOTOS = os.path.join(app.root_path, "static", "images", "imoveis")
+
 
 
 def carregar_imoveis():
@@ -42,6 +47,60 @@ def buscar_imovel(id_imovel):
       return imovel
   return None
 
+def salvar_foto(arquivo, id_imovel):
+  """Salva a foto em static/images/imoveis e devolve o caminho para o CSV."""
+  if arquivo is None or arquivo.filename == "":
+    return ""
+  extensao = arquivo.filename.rsplit(".", 1)[-1].lower()
+  nome = f"imovel-{id_imovel}.{extensao}"
+  os.makedirs(PASTA_FOTOS, exist_ok=True)  # cria a pasta se ela não existir
+  arquivo.save(os.path.join(PASTA_FOTOS, nome))
+  return f"images/imoveis/{nome}"
+
+EXTENSOES_FOTO = {"jpg", "jpeg", "png", "webp"}
+
+def validar_imovel(form, foto):
+  """Devolve uma lista de mensagens de erro. Lista vazia = tudo certo."""
+  erros = []
+
+  obrigatorios = {
+    "anuncio_titulo": "Título", "imovel_tipo": "Tipo",
+    "imovel_bairro": "Bairro", "imovel_cidade": "Cidade",
+    "imovel_rua": "Rua", "imovel_estado": "Estado",
+  }
+  for campo, nome in obrigatorios.items():
+    if not form.get(campo, "").strip():
+      erros.append(f"Preencha o campo {nome}.")
+
+  try:
+    if float(form.get("anuncio_preco", "")) < 0:
+      erros.append("O preço não pode ser negativo.")
+  except ValueError:
+    erros.append("Informe um preço válido.")
+
+  for campo, nome in [("imovel_quartos", "Quartos"), ("imovel_banheiros", "Banheiros")]:
+    valor = form.get(campo, "")
+    if not valor.isdigit():
+      erros.append(f"{nome} deve ser um número inteiro.")
+
+  area = form.get("imovel_area", "")
+  if not area.isdigit() or int(area) < 1:
+    erros.append("A área deve ser um número maior que zero.")
+
+  cep = form.get("imovel_cep", "").replace("-", "")
+  if not (cep.isdigit() and len(cep) == 8):
+    erros.append("Informe um CEP com 8 números.")
+
+  if "@" not in form.get("usuario_email", ""):
+    erros.append("Informe um e-mail válido.")
+
+  if foto is None or foto.filename == "":
+    erros.append("Envie pelo menos uma foto do imóvel.")
+  elif foto.filename.rsplit(".", 1)[-1].lower() not in EXTENSOES_FOTO:
+    erros.append("A foto deve ser JPG, PNG ou WEBP.")
+
+  return erros
+
 
 # Leitura do CSV na inicialização da aplicação.
 IMOVEIS, ERRO_IMOVEIS = carregar_imoveis()
@@ -65,6 +124,43 @@ def index():
 @app.route("/cadastrar_imovel")
 def cadastrar_imovel():
   return render_template("publicar.html")
+
+@app.route("/enviar_dados", methods=["POST"])
+def enviar_dados():
+
+  foto = request.files.get("usuario_fotos")
+  erros = validar_imovel(request.form, foto)
+  if erros:
+    for erro in erros:
+      flash(erro, "erro")
+    return redirect(url_for("cadastrar_imovel"))
+  
+  # O próximo id é o maior id que já existe + 1.
+  novo_id = str(max((int(imovel["id"]) for imovel in IMOVEIS), default=0) + 1)
+
+  imovel = {
+    "id": novo_id,
+    "titulo": request.form.get("anuncio_titulo", "").strip(),
+    "tipo": request.form.get("imovel_tipo", "").strip(),
+    "bairro": request.form.get("imovel_bairro", "").strip(),
+    "cidade": request.form.get("imovel_cidade", "").strip(),
+    "preco": request.form.get("anuncio_preco", "").strip(),
+    "quartos": request.form.get("imovel_quartos", "").strip(),
+    "banheiros": request.form.get("imovel_banheiros", "").strip(),
+    "area": request.form.get("imovel_area", "").strip(),
+    "imagem": salvar_foto(foto, novo_id),
+    "destaque": "nao",
+  }
+
+  with trava_csv:
+    with open(CSV_IMOVEIS, "a", newline="", encoding="utf-8") as arquivo:
+      writer = csv.DictWriter(arquivo, fieldnames=CAMPOS_IMOVEL)
+      writer.writerow(imovel)
+    # O CSV só é lido quando o app abre, então atualizamos a lista na memória também.
+    IMOVEIS.append(imovel)
+
+  flash("Imóvel publicado com sucesso!", "sucesso")
+  return redirect(url_for("detalhes_imovel", id_imovel=novo_id))
 
 @app.route("/financiamento")
 def financiamento():
