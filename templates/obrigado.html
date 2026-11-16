@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block titulo %}Mensagem enviada · Imobiliária P1{% endblock %}
+
+{% block conteudo %}
+<section class="secao container erro">
+    <h1>Mensagem enviada!</h1>
+    <p>Recebemos seu interesse no imóvel <strong>{{ imovel.titulo }}</strong>. O anunciante vai entrar em contato em breve.</p>
+    <a href="{{ url_for('detalhes_imovel', id_imovel=imovel.id) }}" class="botao botao--primario">Voltar para o imóvel</a>
+</section>
+{% endblock %}

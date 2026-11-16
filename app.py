@@ -3,13 +3,17 @@ import os
 from datetime import datetime
 from threading import Lock
 
-from flask import Flask, flash, abort, render_template, request
+from flask import Flask, flash, abort, redirect, render_template, request, url_for
 
 app = Flask(__name__)
 # A sessão do Flask (usada pelas mensagens flash) precisa de uma chave secreta.
 app.secret_key = os.environ.get("SECRET_KEY", "chave-de-desenvolvimento")
 
 CSV_IMOVEIS = os.path.join(app.root_path, "data", "imoveis.csv")
+CSV_CONTATOS = os.path.join(app.root_path, "data", "contatos.csv")
+CAMPOS_CONTATO = ["data", "imovel_id", "nome", "email", "telefone", "mensagem"]
+# Evita que dois envios ao mesmo tempo escrevam no CSV de contatos juntos.
+trava_csv = Lock()
 
 
 def carregar_imoveis():
@@ -83,6 +87,49 @@ def detalhes_imovel(id_imovel):
     abort(404)
   return render_template("detalhes_imovel.html", imovel=imovel)
 
+@app.route("/contato", methods=["POST"])
+def enviar_contato():
+  imovel_id = request.form.get("imovel_id", "").strip()
+  nome = request.form.get("nome", "").strip()
+  email = request.form.get("email", "").strip()
+  telefone = request.form.get("telefone", "").strip()
+  mensagem = request.form.get("mensagem", "").strip()
+
+  # Validação no servidor.
+  if buscar_imovel(imovel_id) is None:
+    abort(404)
+  if not nome or "@" not in email:
+    flash("Preencha o nome e um e-mail válido.", "erro")
+    return redirect(url_for("detalhes_imovel", id_imovel=imovel_id))
+
+  # Limita o tamanho para ninguém lotar o arquivo.
+  nome, email = nome[:100], email[:150]
+  telefone, mensagem = telefone[:20], mensagem[:1000]
+
+  with trava_csv:
+    novo = not os.path.exists(CSV_CONTATOS)
+    with open(CSV_CONTATOS, "a", newline="", encoding="utf-8") as arquivo:
+      writer = csv.DictWriter(arquivo, fieldnames=CAMPOS_CONTATO)
+      if novo:
+        writer.writeheader()
+      writer.writerow({
+        "data": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "imovel_id": imovel_id,
+        "nome": nome,
+        "email": email,
+        "telefone": telefone,
+        "mensagem": mensagem,
+      })
+
+  return redirect(url_for("obrigado", id_imovel=imovel_id))
+
+@app.route("/obrigado/<id_imovel>")
+def obrigado(id_imovel):
+  imovel = buscar_imovel(id_imovel)
+  if imovel is None:
+    abort(404)
+  return render_template("obrigado.html", imovel=imovel)
+
 @app.errorhandler(404)
 def pagina_nao_encontrada(erro):
   return render_template(
@@ -103,55 +150,3 @@ def erro_interno(erro):
 
 if __name__ == "__main__":
   app.run(debug=True)
-
-# csv contato
-
-ARQ_IMOVEIS = "imoveis.csv"
-ARQ_CONTATOS = "contatos.csv"
-CAMPOS_CONTATO = ["data", "imovel_id", "nome", "email", "telefone", "mensagem"]
-trava_csv = Lock()
-
-
-def buscar_imovel(imovel_id):
-    with open(ARQ_IMOVEIS, newline="", encoding="utf-8") as f:
-        for imovel in csv.DictReader(f):
-            if imovel["id"] == str(imovel_id):
-                return imovel
-    return None
-
-
-@app.route("/contato", methods=["POST"])
-def enviar_contato():
-    imovel_id = request.form.get("imovel_id", "").strip()
-    nome = request.form.get("nome", "").strip()
-    email = request.form.get("email", "").strip()
-    telefone = request.form.get("telefone", "").strip()
-    mensagem = request.form.get("mensagem", "").strip()
-
-    # validação no servidor
-    if not imovel_id.isdigit() or not buscar_imovel(imovel_id):
-        abort(400)
-    if not nome or "@" not in email:
-        abort(400)
-
-    # limita o tamanho para ninguém lotar o arquivo
-    nome, email = nome[:100], email[:150]
-    telefone, mensagem = telefone[:20], mensagem[:1000]
-
-    with trava_csv:
-        novo = not os.path.exists(ARQ_CONTATOS)
-        with open(ARQ_CONTATOS, "a", newline="", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=CAMPOS_CONTATO)
-            if novo:
-                writer.writeheader()
-            writer.writerow({
-                "data": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "imovel_id": imovel_id,
-                "nome": nome,
-                "email": email,
-                "telefone": telefone,
-                "mensagem": mensagem,
-            })
-@app.route("/obrigado/<int:imovel_id>")
-def obrigado(imovel_id):
-    return render_template("obrigado.html", imovel=buscar_imovel(imovel_id))
